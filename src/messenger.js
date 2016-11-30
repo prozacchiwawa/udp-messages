@@ -25,7 +25,7 @@ class Messenger extends EventEmitter {
     super()
     this._maxListeners = 0
     timeout = timeout || 2000
-    port = port || 5000
+    port = (typeof port === 'number') ? port : 5000
     packetSize = packetSize || 512
     if(isNaN(timeout)){
       throw new Error("Invalid Timeout")
@@ -42,7 +42,7 @@ class Messenger extends EventEmitter {
     _port.set(this, port)
     _packetSize.set(this, packetSize)
     _timeout.set(this, timeout)
-    let socket = udp.createSocket('udp4')
+    let socket = (typeof port !== 'number') ? port : udp.createSocket('udp4')
     _socket.set(this, socket)
     let onresent = (msg)=> {
       let timers = _timers.get(this)
